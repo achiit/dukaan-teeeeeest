@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#09090b">
+<title>Meridian Rewards</title>
+
+<style>
+:root{
+ --bg:#09090b;
+ --card:#151519;
+ --card2:#1c1b1d;
+ --gold:#d8b56d;
+ --gold2:#f2d99e;
+ --text:#f5f1e8;
+ --muted:#a6a19a;
+ --line:#302d28;
+ --green:#48bd88;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font-family:Arial,sans-serif;
+}
+button{cursor:pointer;font:inherit}
+.app{max-width:1150px;margin:auto;padding:16px}
+header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:12px 0 22px;
+ border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+ width:45px;height:45px;border-radius:13px;
+ display:grid;place-items:center;
+ color:var(--gold2);
+ border:1px solid #806638;
+ background:linear-gradient(145deg,#382b18,#111);
+ font:25px Georgia;
+}
+.brand b{letter-spacing:3px;font-size:15px}
+.brand small{
+ display:block;color:var(--muted);
+ font-size:10px;letter-spacing:2px;margin-top:4px
+}
+.demo{
+ color:var(--gold2);border:1px solid #806638;
+ border-radius:30px;padding:7px 12px;font-size:11px
+}
+.layout{display:grid;grid-template-columns:210px 1fr;gap:20px;margin-top:20px}
+.sidebar{
+ background:#111115;border:1px solid var(--line);
+ border-radius:17px;padding:10px;height:max-content;
+}
+.nav{
+ width:100%;border:0;background:none;color:var(--muted);
+ text-align:left;padding:13px;border-radius:10px;margin:3px 0;
+}
+.nav.active,.nav:hover{background:#302719;color:var(--gold2)}
+.nav span{margin-right:10px}
+.main{min-width:0}
+.page{display:none}
+.page.active{display:block}
+.heading{margin:5px 0 20px}
+.eyebrow{font-size:11px;letter-spacing:2px;color:var(--gold)}
+h1{font:34px Georgia;margin:8px 0}
+h2{font:23px Georgia;margin:0 0 15px}
+.muted{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{
+ background:linear-gradient(145deg,#1b1a1c,#111115);
+ border:1px solid var(--line);
+ border-radius:16px;padding:18px;min-width:0
+}
+.balance{
+ grid-column:span 7;
+ background:linear-gradient(120deg,#332817,#19150f);
+ border-color:#78603a
+}
+.stat{grid-column:span 5}
+.third{grid-column:span 4}
+.half{grid-column:span 6}
+.full{grid-column:1/-1}
+.label{color:var(--muted);font-size:12px}
+.big{font:38px Georgia;color:var(--gold2);margin:10px 0}
+.metric{font:28px Georgia;margin:10px 0}
+.btn{
+ border:1px solid #b18b4a;
+ background:linear-gradient(120deg,#efd18b,#bd964f);
+ color:#18130b;font-weight:bold;
+ border-radius:10px;padding:11px 16px
+}
+.btn-outline{
+ background:transparent;color:var(--gold2);
+ border:1px solid #806638;border-radius:10px;
+ padding:10px 15px
+}
+.btn-dark{
+ background:#252328;color:white;
+ border:1px solid var(--line);border-radius:10px;padding:10px
+}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.progress{
+ height:8px;background:#38322a;
+ border-radius:20px;overflow:hidden;margin:12px 0
+}
+.progress span{
+ display:block;height:100%;
+ background:linear-gradient(90deg,#a67d39,#f2d99e)
+}
+.tag{
+ background:#1d3026;color:#82d9aa;
+ padding:5px 9px;border-radius:20px;font-size:11px
+}
+.goldtag{background:#302718;color:var(--gold2)}
+.item{
+ display:flex;justify-content:space-between;gap:10px;
+ padding:13px 0;border-bottom:1px solid var(--line);
+ font-size:13px
+}
+.item:last-child{border:0}
+.notice{
+ background:#282015;border:1px solid #725a31;
+ color:#e2cca0;padding:13px;border-radius:12px;
+ font-size:12px;line-height:1.6
+}
+.level{
+ display:flex;align-items:center;gap:12px;
+ padding:12px;border:1px solid var(--line);
+ border-radius:12px;margin:9px 0;background:#17171b
+}
+.level-number{
+ width:35px;height:35px;border-radius:10px;
+ background:#302718;color:var(--gold2);
+ display:grid;place-items:center
+}
+input{
+ width:100%;padding:12px;margin:8px 0 15px;
+ background:#0d0d10;color:white;
+ border:1px solid #444;border-radius:10px
+}
+label{font-size:12px;color:var(--muted)}
+footer{
+ text-align:center;color:#77716a;
+ padding:25px 0;font-size:11px
+}
+@media(max-width:700px){
+ .app{padding:12px}
+ .layout{display:block}
+ .sidebar{
+  display:flex;overflow-x:auto;
+  gap:4px;margin-bottom:17px
+ }
+ .nav{white-space:nowrap;width:auto;padding:10px}
+ .nav span{margin-right:5px}
+ .balance,.stat,.third,.half{grid-column:1/-1}
+ h1{font-size:29px}
+ .card{padding:15px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+ <div class="brand">
+  <div class="logo">M</div>
+  <div>
+   <b>MERIDIAN</b>
+   <small>REWARDS & ACHIEVEMENTS</small>
+  </div>
+ </div>
+ <div class="demo">DEMO MODE</div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+ <button class="nav active" onclick="showPage('home',this)">⌂ Overview</button>
+ <button class="nav" onclick="showPage('tasks',this)">✓ Tasks</button>
+ <button class="nav" onclick="showPage('referrals',this)">♧ Referrals</button>
+ <button class="nav" onclick="showPage('levels',this)">◇ Achievements</button>
+ <button class="nav" onclick="showPage('wallet',this)">▣ Wallet</button>
+ <button class="nav" onclick="showPage('admin',this)">⚙ Admin Demo</button>
+</aside>
+
+<main class="main">
+
+<!-- HOME -->
+<section id="home" class="page active">
+ <div class="heading">
+  <div class="eyebrow">MEMBER OVERVIEW</div>
+  <h1>Welcome Back</h1>
+  <div class="muted">Your progress in one place</div>
+ </div>
+
+ <div class="grid">
+
+  <div class="card balance">
+   <div class="label">REWARD POINTS</div>
+   <div class="big">2,450 PTS</div>
+   <div class="muted">Sample demo points only</div>
+   <div class="actions">
+    <button class="btn" onclick="showPage('wallet')">View Wallet</button>
+    <button class="btn-outline" onclick="showPage('tasks')">Explore Tasks</button>
+   </div>
+  </div>
+
+  <div class="card stat">
+   <div class="label">ACHIEVEMENT PROGRESS</div>
+   <div class="metric">Level 4</div>
+   <div class="muted">Explorer · 65% complete</div>
+   <div class="progress"><span style="width:65%"></span></div>
+   <div class="muted">350 points to next level</div>
+  </div>
+
+  <div class="card third">
+   <div class="label">TASKS COMPLETED</div>
+   <div class="metric">8 / 10</div>
+   <span class="tag">In progress</span>
+  </div>
+
+  <div class="card third">
+   <div class="label">REFERRALS</div>
+   <div class="metric">12</div>
+   <span class="tag">Sample data</span>
+  </div>
+
+  <div class="card third">
+   <div class="label">PENDING REVIEW</div>
+   <div class="metric">2</div>
+   <span class="tag goldtag">Demo</span>
+  </div>
+
+  <div class="card half">
+   <h2>Next Achievement</h2>
+   <b>Consistent Contributor</b>
+   <p class="muted">Complete two more sample tasks.</p>
+   <div class="progress"><span style="width:80%"></span></div>
+  </div>
+
+  <div class="card half">
+   <h2>Recent Activity</h2>
+   <div class="item"><span>Sample task approved</span><b style="color:var(--green)">+50 PTS</b></div>
+   <div class="item"><span>Profile completed</span><b style="color:var(--green)">+25 PTS</b></div>
+  </div>
+
+ </div>
+</section>
+
+<!-- TASKS -->
+<section id="tasks" class="page">
+ <div class="heading">
+  <div class="eyebrow">YOUR ACTIVITY</div>
+  <h1>Tasks</h1>
+  <div class="muted">Complete genuine activities</div>
+ </div>
+
+ <div class="grid">
+  <div class="card half">
+   <h2>Complete Profile</h2>
+   <p class="muted">Add basic profile details.</p>
+   <span class="tag">Completed</span>
+   <p>+25 Points</p>
+  </div>
+
+  <div class="card half">
+   <h2>Read Community Rules</h2>
+   <p class="muted">Review participation guidelines.</p>
+   <span class="tag">Completed</span>
+   <p>+25 Points</p>
+  </div>
+
+  <div class="card half">
+   <h2>Feedback Survey</h2>
+   <p class="muted">Share your feedback.</p>
+   <button class="btn-outline" onclick="completeTask(this)">Complete Demo Task</button>
+  </div>
+
+  <div class="card half">
+   <h2>Explore Achievements</h2>
+   <p class="muted">Explore all milestones.</p>
+   <button class="btn-outline" onclick="showPage('levels')">View Levels</button>
+  </div>
+ </div>
+</section>
+
+<!-- REFERRALS -->
+<section id="referrals" class="page">
+ <div class="heading">
+  <div class="eyebrow">COMMUNITY</div>
+  <h1>Referrals</h1>
+  <div class="muted">Invite people who genuinely want to join</div>
+ </div>
+
+ <div class="grid">
+  <div class="card half">
+   <div class="label">YOUR DEMO INVITE CODE</div>
+   <div class="big" style="font-size:30px">MR-7K2P</div>
+   <button class="btn" onclick="copyCode()">Copy Demo Code</button>
+  </div>
+
+  <div class="card half">
+   <div class="label">REFERRAL ACTIVITY</div>
+   <div class="metric">12</div>
+   <div class="muted">Sample referrals</div>
+  </div>
+
+  <div class="card full">
+   <div class="notice">
+    Deposit-based commissions are disabled in this prototype.
+    No purchase is required to use the demo.
+   </div>
+   <h2 style="margin-top:20px">Recent Activity</h2>
+   <div class="item"><span>Member A joined demo</span><span class="tag">Sample</span></div>
+   <div class="item"><span>Member B joined demo</span><span class="tag">Sample</span></div>
+  </div>
+ </div>
+</section>
+
+<!-- LEVELS -->
+<section id="levels" class="page">
+ <div class="heading">
+  <div class="eyebrow">MILESTONES</div>
+  <h1>Achievements</h1>
+  <div class="muted">50 levels based on genuine activity</div>
+ </div>
+
+ <div class="card">
+  <div class="label">CURRENT LEVEL</div>
+  <div class="big" style="font-size:30px">Level 4 · Explorer</div>
+  <div class="progress"><span style="width:65%"></span></div>
+  <div id="levelList"></div>
+ </div>
+</section>
+
+<!-- WALLET -->
+<section id="wallet" class="page">
+ <div class="heading">
+  <div class="eyebrow">POINTS & RECORDS</div>
+  <h1>Wallet</h1>
+  <div class="muted">Demo points, not withdrawable money</div>
+ </div>
+
+ <div class="grid">
+  <div class="card balance">
+   <div class="label">SAMPLE POINT BALANCE</div>
+   <div class="big">2,450 PTS</div>
+   <div class="muted">No cash value or transfer facility</div>
+  </div>
+
+  <div class="card stat">
+   <div class="label">CASH PAYOUTS</div>
+   <div class="metric">Disabled</div>
+   <span class="tag goldtag">Demo Mode</span>
+  </div>
+
+  <div class="card full">
+   <h2>Payment Preview</h2>
+   <div class="notice">
+    Live payment collection is not enabled.
+    No payment should be sent using this prototype.
+   </div>
+   <div class="item"><span>UPI Collection</span><b class="muted">Unavailable</b></div>
+   <div class="item"><span>Withdrawals</span><b class="muted">Unavailable</b></div>
+   <div class="item"><span>Payment Verification</span><b class="muted">Demo Only</b></div>
+  </div>
+ </div>
+</section>
+
+<!-- ADMIN -->
+<section id="admin" class="page">
+ <div class="heading">
+  <div class="eyebrow">RESTRICTED PREVIEW</div>
+  <h1>Admin Overview</h1>
+  <div class="muted">Sample data only · Not a secured admin system</div>
+ </div>
+
+ <div class="grid">
+  <div class="card third">
+   <div class="label">SAMPLE MEMBERS</div>
+   <div class="metric">1,284</div>
+  </div>
+
+  <div class="card third">
+   <div class="label">TASKS TO REVIEW</div>
+   <div class="metric">18</div>
+  </div>
+
+  <div class="card third">
+   <div class="label">SECURITY FLAGS</div>
+   <div class="metric">3</div>
+  </div>
+
+  <div class="card full">
+   <h2>Control Settings Preview</h2>
+   <div class="item"><span>50 Achievement Levels</span><span class="tag">Configured</span></div>
+   <div class="item"><span>Task Review Queue</span><span class="tag goldtag">Sample</span></div>
+   <div class="item"><span>Deposit Collection</span><span class="tag goldtag">Disabled</span></div>
+   <div class="item"><span>Cash Referral Commission</span><span class="tag goldtag">Disabled</span></div>
+   <div class="item"><span>Real Payouts</span><span class="tag goldtag">Disabled</span></div>
+
+   <div class="notice" style="margin-top:15px">
+    A real admin panel needs secure server-side login,
+    database permissions, audit logs and verified payment records.
+    This HTML preview does not provide those protections.
+   </div>
+  </div>
+ </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+ MERIDIAN REWARDS · DEMONSTRATION PROTOTYPE · NO REAL-MONEY TRANSACTIONS
+</footer>
+</div>
+
+<script>
+function showPage(id,button){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+
+ document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
+ if(button) button.classList.add('active');
+
+ window.scrollTo(0,0);
+}
+
+function completeTask(btn){
+ btn.disabled=true;
+ btn.textContent='Completed in Demo';
+ alert('Demo task completed. Sample points only.');
+}
+
+function copyCode(){
+ if(navigator.clipboard){
+  navigator.clipboard.writeText('MR-7K2P')
+  .then(()=>alert('Demo code copied'))
+  .catch(()=>alert('Your demo code is MR-7K2P'));
+ }else{
+  alert('Your demo code is MR-7K2P');
+ }
+}
+
+const names=[
+ 'Starter','Explorer','Contributor','Achiever',
+ 'Pathfinder','Builder','Champion','Mentor',
+ 'Expert','Elite'
+];
+
+let html='';
+for(let i=1;i<=50;i++){
+ let name=names[(i-1)%names.length];
+ let status=i<4?'Completed':i===4?'Current':'Locked';
+
+ html+=`
+ <div class="level">
+  <div class="level-number">${i}</div>
+  <div style="flex:1">
+   <b>Level ${i} · ${name}</b>
+   <div class="muted">
+    ${i===4?'Current milestone':i<4?'Achievement unlocked':'Future activity milestone'}
+   </div>
+  </div>
+  <span class="tag ${i===4?'goldtag':''}">${status}</span>
+ </div>`;
+}
+
+document.getElementById('levelList').innerHTML=html;
+</script>
+</body>
+</html>
